@@ -4,7 +4,10 @@ var jsdom = require('jsdom');
 var request = require('request');
 
 var mysqlUtil = module.exports = {
+
   getList: function(category, page, res) {
+		console.log('http://people.nate.com/dir_job.html?c=',category,'&s=PD&p=',page);
+
 	  console.log('getlist');
 	  request({
 	    uri: 'http://people.nate.com/dir_job.html?c='+category+'&s=PD&p='+page,
@@ -50,5 +53,6 @@ var mysqlUtil = module.exports = {
 	        }
 	      );
 	  })
+	  console.log('end');
 	}
 }

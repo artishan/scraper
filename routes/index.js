@@ -13,8 +13,8 @@ exports.index = function(req, res){
 };
 
 exports.getList = function(req, res){
-  scrap.getList('00010011&s', 1, res);
-  res.render('index', { title: 'GetPeople List' });
+  scrap.getList('00010011', '1', res);
+ // res.render('index', { title: 'GetPeople List' });
 };
 
 	
