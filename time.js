@@ -37,14 +37,40 @@
 
 // // console.log(time.indexOf('년'));
 // // console.log(time.indexOf('월'));
-// // console.log(time.indexOf('일'));
-var re = new RegExp("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>");
-var re2 = new RegExp("/^Subject:(.*)$/");
-var html = "<span>탤런트</span><br /><span>모델</span><br />'";
-console.log(html.replace(re,""));
-console.log(html.replace(re2,"")) 
-console.log(html);
+// // // console.log(time.indexOf('일'));
+// var re = new RegExp("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>");
+// var re2 = new RegExp("/^Subject:(.*)$/");
+// var html = "<span>탤런트</span><br /><span>모델</span><br />'";
+// console.log(html.replace(re,""));
+// console.log(html.replace(re2,"")) 
+// console.log(html);
 
-var myRe=/d(b+)(d)/ig; 
-var checked = myRe.test("cdbBdbsbz"); 
-console.log("checked = " + checked +";<br>");
+// var myRe=/d(b+)(d)/ig; 
+// var checked = myRe.test("cdbBdbsbz"); 
+// console.log("checked = " + checked +";<br>");
+
+var obj = [];
+obj.page = 'thank';
+obj.push
+obj.push({test:'test'});
+//obj[0].test2 = 'modify';
+//obj = [{ test2 : 'test2'}, {test3:'test3'}];
+obj.push({test:'test',test2:'test3'});
+
+//obj.array.push(2);
+console.log(obj[0].test);
+console.log(obj[1].test);
+console.log(obj.page);
+console.log(obj[0].page);
+
+console.log(obj[0]);
+var test = function(obj, err){
+	console.log(obj[1].test2);
+}
+
+test(obj);
+
+console.log(obj);
+for (var i = 0, len = obj.length; i < len; i++){
+	console.log(i);
+}

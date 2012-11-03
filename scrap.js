@@ -6,11 +6,11 @@ var strptime = require('micro-strptime').strptime;
 var db = require('./db');
 
 var krtime = function(time){
-	if((time[time.indexOf('일')]=='일')){
+	if(time.indexOf('일') != -1){
 		return strptime(String(time), '%Y년 %m월 %d일')
-	}else if((time[time.indexOf('월')]=='월')){
+	}else if(time.indexOf('월') != -1){
 		return strptime(String(time), '%Y년 %m월')
-	}else if((time[time.indexOf('년')]=='년')){
+	}else if(time.indexOf('년') != -1){
 		return strptime(String(time), '%Y년')
 	}else{
 		return;
@@ -113,7 +113,7 @@ var mysqlUtil = module.exports = {
 		})
 	},
 	nateParsing: function(category, page, res) {
-		console.log('Scrap : http://people.nate.com/dir_job.html?c=',category,'&s=PD&p=',page,"'");
+		console.log('Scrap : http://people.nate.com/dir_job.html?c=',category,'&s=PD&p=',page);
 		
 		request({
 			uri: 'http://people.nate.com/dir_job.html?c='+category+'&s=PD&p='+page,
@@ -126,30 +126,29 @@ var mysqlUtil = module.exports = {
 				var buf = new Buffer(body.length);
 				buf.write(body, 0, body.length, 'binary');
 				html=iconv.convert(buf).toString();
-
+				var data = [];
+				data.nate_page = page;
 				jsdom.env
 				(
 					html,
 					["http://code.jquery.com/jquery.js"],
-					function(errors, window) {
-						var data = new Object();
+					function(err, window) {
+						
 						var $ = window.$;
-						$list = $('.dir-box').find('tbody tr');
+						$list = $('.dir-box>tbody>tr');
 						$list.each(function(i, item){
 							var $item = $(item);
-							var href = $item.find('.detail a').attr('href');
-							if(data.nate_url!=undefined){
-								data[i].href = href;
-								data[i].thumb = $item.find('.img img').attr('src');
-								data[i].name = $item.find('.person').text();
-								data[i].birth = $item.find('.birth').text();
-								data[i].agency = $item.find('.position').text();
-								data[i].job = $item.find('.job').text();
-								data[i].birth = krtime(data[i].birth);
-								console.log('++PARSING++ Page :',page,' DB :',data[i].name.trim());
-							}            
+								data.push({									
+									name : $item.find('.person').text().trim(),
+									thumb : $item.find('.img img').attr('src'),
+									birth : krtime($item.find('.birth').text()),
+									agency : $item.find('.position').text(),
+									job : $item.find('.job').text(),
+									nate_url : $item.find('.detail a').attr('href')
+								});
+								console.log('++PARSING++ page :',data.nate_page,'-',i,' name:',data[i].name);            
 						});
-						db.page(data, page, res);
+						db.page(data, res);
 					}
 				);
 		})
