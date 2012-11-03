@@ -1,70 +1,40 @@
 var config = require('./config'),
     mysql = require('mysql');
-    client = mysql.createConnection(config.mysql);
+    client = mysql.createClient(config.mysql);
 
 var mysqlUtil = module.exports = {
-    search: function(query, res) {
+    people: function(data, res) {
       client.query('USE ' + config.people_db);
       client.query(
-          "SELECT * FROM `" + config.people_table + "` WHERE `name` LIKE  '%" + query + "%'"
+          'INSERT INTO ' + config.peoplelist_table + ' SET name = ?, thumb = ?, birth = ?, job = ?, agency = ?, nate_url = ?, nate_page = ?'
+          , [data.name, data.thumb, data.birth, data.job, data.agency, data.nate_url, data.nate_page]
           , function(err, rows, fields) {
             if (err) {
-              res.render('error', { title: 'DATABASE ERROR', error: err });
+              console.log(data.name,err);
               return; 
             } 
-            res.render('search', { 
-              title: 'Rinker-Result',
-              query: query,
-              rows: rows,
-              result: rows.length
-            });
+            console.log('++DB INSERT++ Page :',data.nate_page,' DB : ',data.name.trim());
           }
       );
-    },
-    peopleList: function(query, res) {
+      client.end();
+  },
+   page: function(data, page, res) {
       client.query('USE ' + config.people_db);
-      client.query(
-          "SELECT * FROM `" + config.peoplelist_table + "` WHERE `name` LIKE  '%" + query + "%'"
-          , function(err, rows, fields) {
-            if (err) {
-              res.render('error', { title: 'DATABASE ERROR', error: err });
-              return; 
-            } 
-            res.render('search', { 
-              title: 'Rinker-Result',
-              query: query,
-              rows: rows,
-              result: rows.length
-            });
-          }
-      );
-    },    
-    sql: function(use, sql, res) {
-      // if((typeof sql != 'string')){
-      //   unescape(sql.replace(/\+/g, " "))
-      // }
-      client.query('USE ' + use, 
-        function(err){
-          if (err) {
-            res.render('error', { title: 'DATABASE ERROR', error: err });
-            return; 
-          }
-        }
-      );
-      client.query(
-          sql
-          , function(err, rows, fields) {
-            if (err) {
-              res.render('error', { title: 'SQL QUERY ERROR', error: err });
-              return; 
-            } 
-            res.render('search', { 
-              title: 'Rinker-SQL-Result',
-              query: 'USE '+use+' '+sql,
-              rows: rows,
-              result: rows.length
-            });
-          }
-      );
-    }
+      
+      for (var i = data.length; i--;){
+        client.query(
+            'INSERT INTO ' + config.peoplelist_table + ' SET name = ?, thumb = ?, birth = ?, job = ?, agency = ?, nate_url = ?, nate_page = ?'
+            , [data[i].name, data[i].thumb, data[i].birth, data[i].job, data[i].agency, data[i].nate_url, data[i].nate_page]
+            , function(err, rows, fields) {
+                if (err) {
+                  console.log(data[i].name,err);
+                  return; 
+                }
+                console.log('++DB INSERT++ People:',data.name);
+            }
+        );
+      }
+      client.end();
+      console.log('++DB INSERT++ Page:', page);
+    }  
 };

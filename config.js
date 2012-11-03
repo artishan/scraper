@@ -8,5 +8,5 @@ exports.mysql = {
 exports.test = '테스트';
 
 exports.people_db = 'repository';
-exports.peoplelist_table = 'nate_list'
+exports.peoplelist_table = 'people'
 exports.people_table = 'nate_people';
