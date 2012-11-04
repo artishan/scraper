@@ -28,7 +28,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/getlist', routes.getList);
-app.get('/natelist', routes.natelistParsing);
+app.get('/getpeople', routes.getPeople);
+app.get('/natelist', routes.nate_listParsing);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
