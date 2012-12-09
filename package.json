@@ -1,12 +1,16 @@
 {
   "name": "Scraper",
-  "version": "0.0.1",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "start": "node app"
   },
   "dependencies": {
-    "express": "3.0.0",
-    "jade": "*"
+    "socket.io": "latest",
+    "mysql": "latest",
+    "neo4j": "latest",
+    "iconv": "latest",
+    "jsdom": "latest",
+    "micro-strptime": "latest"
   }
 }
